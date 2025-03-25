@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require_relative 'secret_code'
 require 'colorize'
 require 'pry-byebug'
 
 class Guess
-
+  
   def initialize
     @arr = []
     @code = SecretCode.new
@@ -13,12 +15,11 @@ class Guess
     @win = false
   end
 
-  def play_round
-
+  def round
     @full_right = 0
     @almost_right = 0
 
-    self.get_new_input
+    self.new_input
 
     @arr.each do |number|
       @comp_select.each do |figure|
@@ -29,19 +30,19 @@ class Guess
       end
     end
 
-    for i in 0...4
+    (0...4).each do |i|
       if @arr[i] == @comp_select[i]
         @full_right += 1
         @almost_right -= 1
       end
     end
     self.give_result
-    return @arr
+    @arr
   end
 
   private
 
-  def give_result
+  def result
 
     puts "Round #{@round}: your guess was #{@arr}"
     puts "you got #{@full_right} right figures in the right place".colorize(:green)
@@ -50,16 +51,15 @@ class Guess
 
   end
 
-  def get_new_input
-
+  def new_input
     puts 'Insert your code (4 figures): '
     @input = gets.chomp.to_s
     @arr = @input.split('')
 
     @arr.pop while @arr.length > 4
 
-    @arr = @arr.map { |number| number.to_i }
+    @arr = @arr.map(&:to_i)
     @arr.compact
-
+    
   end
 end

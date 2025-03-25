@@ -1,8 +1,10 @@
-require_relative 'guess.rb'
+# frozen_string_literal: true
+
+require_relative 'guess'
 require 'pry-byebug'
 
 class Game
-    
+
   def initialize
     @secret_code = SecretCode.new
     @comp_select = @secret_code.generate_code
@@ -20,21 +22,19 @@ class Game
       binding.pry
       @round += 1
 
-      if @arr == @comp_select
-        @win = true
-      end
+      @win = true if @arr == @comp_select
 
     end
 
     if @round > 12
       puts "You didn't find the code, try again"
-      self.reset_game
+      reset_game
     end
 
-    if @win == true
-      puts "You found the code in #{@round} rounds"
-      self.reset_game
-    end
+    return unless @win == true
+
+    puts "You found the code in #{@round} rounds"
+    reset_game
   end
 
   private
@@ -46,5 +46,5 @@ class Game
     @almost_right = 0
     @win = false
   end
-
+  
 end
